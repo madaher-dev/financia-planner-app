@@ -10,9 +10,15 @@ export const EDIT_SUCCESS = 'EDIT_SUCCESS';
 export const EDIT_FAIL = 'EDIT_FAIL';
 export const PARTNER_ADDED = 'PARTNER_ADDED';
 export const PARTNER_FAIL = 'PARTNER_FAIL';
-
+export const FORGOT = 'FORGOT';
+export const FORGOT_FAIL = 'FORGOT_FAIL';
 export const SET_ALERT = 'SET_ALERT';
 export const REMOVE_ALERT = 'REMOVE_ALERT';
+export const SET_LOADING = 'SET_LOADING;';
+export const RESET_TOKEN_OK = 'RESET_TOKEN_OK';
+export const RESET_TOKEN_FAIL = 'RESET_TOKEN_FAIL';
+export const RESET_OK = 'RESET_OK';
+export const RESET_FAIL = 'RESET_FAIL';
 
 export const TITLE = 'TITLE';
 export const BAR_OPEN = 'BAR_OPEN';

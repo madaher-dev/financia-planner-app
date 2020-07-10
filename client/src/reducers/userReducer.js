@@ -11,6 +11,13 @@ import {
   EDIT_FAIL,
   PARTNER_ADDED,
   PARTNER_FAIL,
+  FORGOT,
+  FORGOT_FAIL,
+  SET_LOADING,
+  RESET_TOKEN_OK,
+  RESET_TOKEN_FAIL,
+  RESET_OK,
+  RESET_FAIL,
 } from '../actions/Types';
 
 const initialState = {
@@ -20,6 +27,10 @@ const initialState = {
   user: null,
   error: null,
   partner: false,
+  formLoading: false,
+  forgot: false,
+  reset: false,
+  email: null,
 };
 
 export default (state = initialState, action) => {
@@ -53,6 +64,7 @@ export default (state = initialState, action) => {
     case LOGIN_FAIL:
     case AUTH_ERROR:
     case LOGOUT:
+    case FORGOT_FAIL:
       return {
         ...state,
         token: null,
@@ -60,6 +72,9 @@ export default (state = initialState, action) => {
         loading: false,
         user: null,
         error: action.payload,
+        formLoading: false,
+        forgot: false,
+        partner: false,
       };
     case EDIT_SUCCESS:
       return {
@@ -90,8 +105,53 @@ export default (state = initialState, action) => {
         ...state,
         error: null,
         loading: false,
+        formLoading: false,
+        forgot: false,
+        partner: false,
+      };
+    case SET_LOADING:
+      return {
+        ...state,
+        formLoading: true,
+      };
+    case FORGOT:
+      return {
+        ...state,
+        forgot: true,
+        formLoading: false,
+      };
+    case RESET_TOKEN_OK:
+      return {
+        ...state,
+        reset: true,
+        loading: false,
+        email: action.payload,
+        formLoading: false,
+      };
+    case RESET_TOKEN_FAIL:
+      return {
+        ...state,
+        reset: false,
+        loading: false,
+        error: action.payload,
+        email: null,
+        formLoading: false,
       };
 
+    case RESET_OK:
+      return {
+        ...state,
+        token: action.payload,
+        formLoading: false,
+        error: null,
+      };
+    case RESET_FAIL:
+      return {
+        ...state,
+        token: null,
+        formLoading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }

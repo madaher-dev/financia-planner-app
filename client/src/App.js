@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Login from './components/auth/Login';
 import Home from './components/pages/Home';
 import Register from './components/auth/Register';
+import ForgotPass from './components/auth/ForgotPass';
 import { Provider } from 'react-redux';
 import store from './Store';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,6 +14,7 @@ import PrivateRoute from './components/routing/PrivateRoute';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import setAuthToken from './utils/setauthtoken';
 import Alerts from './components/layout/Alerts';
+import ResetPassword from './components/auth/ResetPassword';
 
 const theme = createMuiTheme({
   palette: {
@@ -58,6 +60,12 @@ const App = () => {
                   <Route exact path='/' component={Login} />
                   <Route exact path='/register' component={Register} />
                   <PrivateRoute path='/user' component={Home} />
+                  <Route exact path='/forgotPassword' component={ForgotPass} />
+                  <Route
+                    exact
+                    path='/reset/:email_token'
+                    component={ResetPassword}
+                  />
                 </Switch>
               </Grid>
               <Grid item xs={false} sm={2} md={4} />

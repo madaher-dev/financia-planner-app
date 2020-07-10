@@ -16,7 +16,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 
 import logo from '../images/logo.jpg';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { setAlert } from '../../actions/alertActions';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,6 +34,18 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 250,
     padding: 20,
+  },
+  or: {
+    paddingTop: 40,
+  },
+  divider: {
+    margin: 40,
+  },
+  forgot: {
+    float: 'right',
+  },
+  title: {
+    margin: 20,
   },
 }));
 
@@ -104,7 +116,9 @@ const Login = ({
           <CardContent>
             <div align='center'>
               <img src={logo} alt='logo' width='200' height='200' />
-              <Typography variant='h6'>Financial Planner</Typography>
+              <Typography variant='h6' className={classes.title}>
+                Financial Planner
+              </Typography>
             </div>
 
             <Divider variant='middle' />
@@ -144,6 +158,44 @@ const Login = ({
               fullWidth
             >
               Login
+            </Button>
+          </CardActions>
+          <CardActions className={classes.forgot}>
+            <Button
+              color='primary'
+              to='/forgotPassword'
+              component={Link}
+              size='small'
+              className={classes.forgot}
+            >
+              Forgot Password
+            </Button>
+          </CardActions>
+          <Grid item container xs={12}>
+            <Grid
+              item
+              xs={12}
+              container
+              justify='flex-end'
+              alignItems='flex-start'
+            ></Grid>
+            <Grid item xs={12}>
+              <Typography align={'center'}>OR</Typography>
+            </Grid>
+          </Grid>
+
+          <Divider className={classes.divider} />
+          <Typography align={'center'}>Don't have and account?</Typography>
+          <CardActions>
+            <Button
+              variant='contained'
+              color='primary'
+              type='submit'
+              to='/register'
+              component={Link}
+              fullWidth
+            >
+              Register
             </Button>
           </CardActions>
         </Card>

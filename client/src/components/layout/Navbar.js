@@ -1,5 +1,5 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { Fragment } from 'react';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -13,6 +13,16 @@ import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 
 import Hidden from '@material-ui/core/Hidden';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import { Link } from 'react-router-dom';
+
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { logout } from '../../actions/userActions';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -38,8 +48,49 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ title, open }) => {
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
+
+const Navbar = ({ title, open, logout, isAuthenticated }) => {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Drawer
       className={classes.drawer}
@@ -52,12 +103,35 @@ const Navbar = ({ title, open }) => {
     >
       <Toolbar>
         <Grid container>
-          <Grid item container xs={2} className={classes.grid}>
-            <AccountBalanceIcon fontSize='large' className={classes.icon} />
-            <Typography variant='h6' className={classes.title}>
-              <Hidden xsDown>Financial Planner</Hidden>
-            </Typography>
-          </Grid>
+          {isAuthenticated ? (
+            <Grid item container xs={2} className={classes.grid}>
+              <IconButton
+                edge='start'
+                className={classes.menuButton}
+                to='/user'
+                component={Link}
+              >
+                <AccountBalanceIcon fontSize='large' className={classes.icon} />
+              </IconButton>
+              <Typography variant='h6' className={classes.title}>
+                <Hidden xsDown>Financial Planner</Hidden>
+              </Typography>
+            </Grid>
+          ) : (
+            <Grid item container xs={2} className={classes.grid}>
+              <IconButton
+                edge='start'
+                className={classes.menuButton}
+                to='/'
+                component={Link}
+              >
+                <AccountBalanceIcon fontSize='large' className={classes.icon} />
+              </IconButton>
+              <Typography variant='h6' className={classes.title}>
+                <Hidden xsDown>Financial Planner</Hidden>
+              </Typography>
+            </Grid>
+          )}
           <Grid item container xs={8} justify='center' className={classes.grid}>
             <Typography variant='h6' className={classes.title}>
               {title}
@@ -70,14 +144,50 @@ const Navbar = ({ title, open }) => {
             className={classes.grid}
             justify='flex-end'
           >
-            <IconButton
-              edge='start'
-              className={classes.menuButton}
-              color='inherit'
-              aria-label='menu'
+            {isAuthenticated ? (
+              <IconButton
+                edge='start'
+                className={classes.menuButton}
+                color='inherit'
+                aria-label='menu'
+                onClick={handleClick}
+              >
+                <MenuIcon />
+              </IconButton>
+            ) : (
+              <Fragment />
+            )}
+            <StyledMenu
+              id='customized-menu'
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
             >
-              <MenuIcon />
-            </IconButton>
+              <StyledMenuItem>
+                <ListItemIcon>
+                  <DraftsIcon fontSize='small' />
+                </ListItemIcon>
+                <ListItemText primary='Drafts' />
+              </StyledMenuItem>
+              <StyledMenuItem>
+                <ListItemIcon>
+                  <InboxIcon fontSize='small' />
+                </ListItemIcon>
+                <ListItemText primary='Inbox' />
+              </StyledMenuItem>
+              <StyledMenuItem
+                onClick={() => {
+                  logout();
+                  handleClose();
+                }}
+              >
+                <ListItemIcon>
+                  <ExitToAppIcon fontSize='small' />
+                </ListItemIcon>
+                <ListItemText primary='Logout' />
+              </StyledMenuItem>
+            </StyledMenu>
           </Grid>
         </Grid>
       </Toolbar>
@@ -88,10 +198,13 @@ const Navbar = ({ title, open }) => {
 Navbar.propTypes = {
   open: PropTypes.bool.isRequired,
   title: PropTypes.string,
+  logout: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   title: state.nav.title,
   open: state.nav.barOpen,
+  isAuthenticated: state.users.isAuthenticated,
 });
-export default connect(mapStateToProps, {})(Navbar);
+export default connect(mapStateToProps, { logout })(Navbar);
