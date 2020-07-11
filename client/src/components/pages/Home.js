@@ -9,7 +9,7 @@ import Menu from './Menu';
 import Income from './Income';
 import Goals from './Goals';
 import Family from './Family';
-import Loans from './Loans';
+import Loans from './loans/Loans';
 import Assets from './assets/Assets';
 import Profile from './Profile';
 

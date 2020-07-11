@@ -56,9 +56,9 @@ export const setCurrent = (asset) => (dispatch) => {
     payload: asset,
   });
 };
-// Clear Current Contact
+// Clear Current Asset
 export const clearCurrent = () => ({ type: CLEAR_CURRENT });
-// Update Contact
+// Update Asset
 export const editAsset = (asset) => async (dispatch) => {
   const config = {
     headers: {

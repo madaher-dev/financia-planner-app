@@ -67,7 +67,7 @@ router.put('/:id', auth, async (req, res) => {
     let asset = await Asset.findById(req.params.id);
     if (!asset) return res.status(404).json({ msg: 'Asset not found' });
 
-    // Make sure user owns contact
+    // Make sure user owns asset
     if (asset.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'Not Authorized' });
     }
@@ -93,7 +93,7 @@ router.delete('/:id', auth, async (req, res) => {
 
     if (!asset) return res.status(404).json({ msg: 'Asset not found' });
 
-    // Make sure user owns contact
+    // Make sure user owns asset
     if (asset.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'Not Authorized' });
     }

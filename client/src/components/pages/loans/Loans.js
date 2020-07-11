@@ -7,15 +7,15 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
-import AddAsset from './AddAsset';
-import EditAsset from './EditAsset';
+import AddLoan from './AddLoan';
+import EditLoan from './EditLoan';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import AssetCard from './AssetCard';
+import LoanCard from './LoanCard';
 
 import Spinner from '../../layout/Spinner';
-import { getAssets, clearCurrent } from '../../../actions/assetActions';
+import { getLoans, clearCurrent } from '../../../actions/loanActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,20 +48,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Assets = ({
+const Loans = ({
   openBar,
   setTitle,
-  assets,
-  getAssets,
+  loans,
+  getLoans,
   loading,
-
   clearCurrent,
 }) => {
   const classes = useStyles();
   useEffect(() => {
-    setTitle('Assets');
+    setTitle('Loans');
     openBar();
-    getAssets();
+    getLoans();
 
     // eslint-disable-next-line
   }, []);
@@ -78,7 +77,7 @@ const Assets = ({
   const handleEditOpen = () => {
     setEditOpen(true);
   };
-  const addAsset = () => {
+  const addLoan = () => {
     setOpen(true);
   };
 
@@ -97,7 +96,7 @@ const Assets = ({
           color='primary'
           aria-label='menu'
           className={classes.icon}
-          onClick={addAsset}
+          onClick={addLoan}
         >
           <AddCircleOutlineIcon
             style={{ fontSize: 40 }}
@@ -105,19 +104,19 @@ const Assets = ({
             className={classes.icon2}
           />
         </IconButton>
-        <Typography color='primary'>Add Asset</Typography>
+        <Typography color='primary'>Add Loan</Typography>
       </Grid>
       <Grid item className={classes.firstRow}>
         <Card className={classes.root} variant='outlined'>
           <CardContent>
-            {assets !== null && !loading ? (
+            {loans !== null && !loading ? (
               <Grid container spacing={2} direction='column'>
-                {assets.map((asset) => (
-                  //Looping through assets array and list Asset Item Component
+                {loans.map((loan) => (
+                  //Looping through loans array and list Loan Item Component
 
-                  <Grid item key={asset._id}>
-                    <AssetCard
-                      asset={asset}
+                  <Grid item key={loan._id}>
+                    <LoanCard
+                      loan={loan}
                       setEditOpen={() => handleEditOpen()}
                     />
                   </Grid>
@@ -134,28 +133,28 @@ const Assets = ({
           </CardActions>
         </Card>
       </Grid>
-      <AddAsset open={open} handleClose={() => handleClose()} />
-      <EditAsset open={openEdit} handleClose={() => handleEditClose()} />
+      <AddLoan open={open} handleClose={() => handleClose()} />
+      <EditLoan open={openEdit} handleClose={() => handleEditClose()} />
     </Grid>
   );
 };
 
-Assets.propTypes = {
+Loans.propTypes = {
   openBar: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
-  assets: PropTypes.array,
+  loans: PropTypes.array,
   loading: PropTypes.bool.isRequired,
 
   clearCurrent: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
   isAuthenticated: state.users.isAuthenticated,
-  assets: state.assets.assets,
-  loading: state.assets.loading,
+  loans: state.loans.loans,
+  loading: state.loans.loading,
 });
 export default connect(mapStateToProps, {
   openBar,
   setTitle,
-  getAssets,
+  getLoans,
   clearCurrent,
-})(Assets);
+})(Loans);

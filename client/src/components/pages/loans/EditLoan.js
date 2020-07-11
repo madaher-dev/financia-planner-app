@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import { connect } from 'react-redux';
@@ -6,16 +6,18 @@ import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
+
 import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
+
 import Button from '@material-ui/core/Button';
-import Select from '@material-ui/core/Select';
-import { editAsset } from '../../../actions/assetActions';
+
+import { editLoan } from '../../../actions/loanActions';
 import { setAlert } from '../../../actions/alertActions';
+import DateFnsUtils from '@date-io/date-fns';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,26 +31,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EditAsset = ({ handleClose, open, editAsset, setAlert, current }) => {
+const EditLoan = ({ handleClose, open, editLoan, setAlert, current }) => {
   const classes = useStyles();
-  const [assetToEdit, setAsset] = useState({
+  const [loanToEdit, setLoan] = useState({
     name: '',
     amount: '',
-    type: '',
-    returnValue: 0,
+    interest: 0,
+    maturity: '',
     id: '',
   });
   //Setting form data on form open
   React.useEffect(
     () => {
       if (current) {
-        setAsset({
+        setLoan({
           name: current.name,
           amount: current.amount,
-          type: current.type,
           id: current._id,
         });
-        setReturn(current.returnValue);
+        setInterest(current.interest);
+        setDateChange(current.maturity);
       }
     },
 
@@ -56,27 +58,38 @@ const EditAsset = ({ handleClose, open, editAsset, setAlert, current }) => {
     [current]
   );
 
-  const { name, amount, type } = assetToEdit;
+  const { name, amount } = loanToEdit;
   const onChange = (e) => {
-    setAsset({ ...assetToEdit, [e.target.name]: e.target.value });
+    setLoan({ ...loanToEdit, [e.target.name]: e.target.value });
   };
 
-  const [returnValue, setReturn] = useState(0);
-  const handleReturn = (event, newValue) => {
-    setReturn(newValue);
-    setAsset({ ...assetToEdit, returnValue: newValue });
+  const [selectedDate, setDateChange] = useState(new Date());
+  const [interest, setInterest] = useState(0);
+
+  const handleInterest = (event, newValue) => {
+    setInterest(newValue);
+    setLoan({ ...loanToEdit, returnValue: newValue });
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    //setAsset({ ...asset, [returnValue]: returnValue });
-    // setLoading();
+
     if (name === '') setAlert('Please fill in a name', 'error');
     else {
-      editAsset(assetToEdit);
+      editLoan(loanToEdit);
       handleClose(true);
     }
   };
+
+  useEffect(() => {
+    setLoan({ ...loanToEdit, maturity: selectedDate });
+    // eslint-disable-next-line
+  }, [selectedDate]);
+
+  useEffect(() => {
+    setLoan({ ...loanToEdit, interest: interest });
+    // eslint-disable-next-line
+  }, [interest]);
 
   return (
     <Dialog
@@ -84,7 +97,7 @@ const EditAsset = ({ handleClose, open, editAsset, setAlert, current }) => {
       onClose={handleClose}
       aria-labelledby='form-dialog-title'
     >
-      <DialogTitle id='form-dialog-title'>Edit Asset</DialogTitle>
+      <DialogTitle id='form-dialog-title'>Edit Loan</DialogTitle>
       <DialogContent>
         <TextField
           margin='dense'
@@ -108,72 +121,69 @@ const EditAsset = ({ handleClose, open, editAsset, setAlert, current }) => {
           onChange={onChange}
           fullWidth
         />
-        <FormControl className={classes.formControl}>
-          <InputLabel id='type-label'>Type</InputLabel>
-          <Select
-            labelId='type'
-            name='type'
-            id='type'
-            value={type}
-            onChange={onChange}
-          >
-            <MenuItem id='type' value={10}>
-              Cash
-            </MenuItem>
-            <MenuItem id='type' value={20}>
-              Logn Term Deposit
-            </MenuItem>
-            <MenuItem id='type' value={30}>
-              Equities
-            </MenuItem>
-            <MenuItem id='type' value={40}>
-              Real Estate
-            </MenuItem>
-          </Select>
-        </FormControl>
         <Typography
           className={classes.title}
           color='textSecondary'
           gutterBottom
         >
-          Return: {returnValue}%
+          Interest: {interest}%
         </Typography>
 
         <Slider
-          id='returnValue'
-          name='returnValue'
-          value={returnValue}
-          onChange={handleReturn}
+          id='interest'
+          name='interest'
+          value={interest}
+          onChange={handleInterest}
           min={0}
           max={30}
           valueLabelDisplay='auto'
           color='secondary'
         />
+        <Typography
+          className={classes.title}
+          color='textSecondary'
+          gutterBottom
+        >
+          Maturity Year:
+        </Typography>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <DatePicker
+            className={classes.date}
+            value={selectedDate}
+            onChange={setDateChange}
+            views={['year']}
+            autoOk
+            minDate={new Date()}
+            InputProps={{
+              className: classes.input,
+            }}
+          />
+        </MuiPickersUtilsProvider>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color='primary'>
           Cancel
         </Button>
         <Button onClick={onSubmit} color='primary'>
-          Update Asset
+          Update Loan
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-EditAsset.propTypes = {
+EditLoan.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  editAsset: PropTypes.func.isRequired,
+  editLoan: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
   current: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
-  current: state.assets.current,
+  current: state.loans.current,
 });
 export default connect(mapStateToProps, {
-  editAsset,
+  editLoan,
   setAlert,
-})(EditAsset);
+})(EditLoan);

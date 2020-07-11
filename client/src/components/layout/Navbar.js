@@ -23,6 +23,8 @@ import { Link } from 'react-router-dom';
 
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { logout } from '../../actions/userActions';
+import { clearAssets } from '../../actions/assetActions';
+import { clearLoans } from '../../actions/loanActions';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -79,7 +81,14 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-const Navbar = ({ title, open, logout, isAuthenticated }) => {
+const Navbar = ({
+  title,
+  open,
+  logout,
+  isAuthenticated,
+  clearAssets,
+  clearLoans,
+}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -91,6 +100,11 @@ const Navbar = ({ title, open, logout, isAuthenticated }) => {
     setAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    logout();
+    clearAssets();
+    clearLoans();
+  };
   return (
     <Drawer
       className={classes.drawer}
@@ -178,7 +192,7 @@ const Navbar = ({ title, open, logout, isAuthenticated }) => {
               </StyledMenuItem>
               <StyledMenuItem
                 onClick={() => {
-                  logout();
+                  handleLogout();
                   handleClose();
                 }}
               >
@@ -200,6 +214,8 @@ Navbar.propTypes = {
   title: PropTypes.string,
   logout: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
+  clearAssets: PropTypes.func.isRequired,
+  clearLoans: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -207,4 +223,6 @@ const mapStateToProps = (state) => ({
   open: state.nav.barOpen,
   isAuthenticated: state.users.isAuthenticated,
 });
-export default connect(mapStateToProps, { logout })(Navbar);
+export default connect(mapStateToProps, { logout, clearAssets, clearLoans })(
+  Navbar
+);

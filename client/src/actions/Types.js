@@ -32,3 +32,10 @@ export const UPDATE_ASSET = 'UPDATE_ASSET';
 export const ASSET_ERROR = 'ASSET_ERROR';
 export const GET_ASSETS = 'GET_ASSETS';
 export const CLEAR_ASSETS = 'CLEAR_ASSETS';
+
+export const ADD_LOAN = 'ADD_LOAN';
+export const DELETE_LOAN = 'DELETE_LOAN';
+export const UPDATE_LOAN = 'UPDATE_LOAN';
+export const LOAN_ERROR = 'LOAN_ERROR';
+export const GET_LOANS = 'GET_LOANS';
+export const CLEAR_LOANS = 'CLEAR_LOANS';
