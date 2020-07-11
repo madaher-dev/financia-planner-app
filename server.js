@@ -17,6 +17,7 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/partners', require('./routes/partners'));
 app.use('/api/assets', require('./routes/assets'));
 app.use('/api/loans', require('./routes/loans'));
+app.use('/api/family', require('./routes/family'));
 
 // Server static assets in production
 if (process.env.NODE_ENV === 'production') {

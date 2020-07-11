@@ -4,6 +4,7 @@ import navReducer from './navReducer';
 import alertReducer from './alertReducer';
 import assetReducer from './assetReducer';
 import loanReducer from './loanReducer';
+import childReducer from './childReducer';
 
 export default combineReducers({
   users: userReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   alerts: alertReducer,
   assets: assetReducer,
   loans: loanReducer,
+  family: childReducer,
 });

@@ -8,9 +8,10 @@ import { Route, Switch } from 'react-router-dom';
 import Menu from './Menu';
 import Income from './Income';
 import Goals from './Goals';
-import Family from './Family';
+
 import Loans from './loans/Loans';
 import Assets from './assets/Assets';
+import Family from './family/Child';
 import Profile from './Profile';
 
 const Home = ({ openBar, setTitle, loadUser, match }) => {

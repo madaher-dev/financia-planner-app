@@ -39,3 +39,10 @@ export const UPDATE_LOAN = 'UPDATE_LOAN';
 export const LOAN_ERROR = 'LOAN_ERROR';
 export const GET_LOANS = 'GET_LOANS';
 export const CLEAR_LOANS = 'CLEAR_LOANS';
+
+export const ADD_CHILD = 'ADD_CHILD';
+export const DELETE_CHILD = 'DELETE_CHILD';
+export const UPDATE_CHILD = 'UPDATE_CHILD';
+export const CHILD_ERROR = 'CHILD_ERROR';
+export const GET_FAMILY = 'GET_FAMILY';
+export const CLEAR_FAMILY = 'CLEAR_FAMILY';

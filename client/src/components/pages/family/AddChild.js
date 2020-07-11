@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Slider from '@material-ui/core/Slider';
+
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,15 +8,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
+
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
+
 import Button from '@material-ui/core/Button';
-import Select from '@material-ui/core/Select';
-import { addAsset } from '../../../actions/assetActions';
+
+import { addChild } from '../../../actions/childActions';
 import { setAlert } from '../../../actions/alertActions';
 
 const useStyles = makeStyles((theme) => ({
@@ -32,49 +30,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddAsset = ({ handleClose, open, addAsset, setAlert }) => {
+const AddChild = ({ handleClose, open, addChild, setAlert }) => {
   const classes = useStyles();
 
-  const [asset, setAsset] = useState({
+  const [child, setChild] = useState({
     name: '',
-    amount: '',
-    type: 10,
-    returnValue: 0,
+    age: '',
+    school: '',
+    uni: '',
   });
-
-  const clearAsset = () => {
-    setAsset({
+  const { name, age, school, uni } = child;
+  const onChange = (e) => {
+    setChild({ ...child, [e.target.name]: e.target.value });
+  };
+  const clearChild = () => {
+    setChild({
       name: '',
-      amount: '',
-      type: 10,
-      returnValue: 0,
+      age: '',
+      school: '',
+      uni: '',
     });
   };
-  const { name, amount, type } = asset;
-  const onChange = (e) => {
-    setAsset({ ...asset, [e.target.name]: e.target.value });
-  };
-
-  const [returnValue, setReturn] = useState(0);
-  const handleReturn = (event, newValue) => {
-    setReturn(newValue);
-    setAsset({ ...asset, returnValue: newValue });
-  };
-
   const onSubmit = async (e) => {
     e.preventDefault();
 
     if (name === '') setAlert('Please fill in a name', 'error');
     else {
-      addAsset(asset);
+      addChild(child);
       handleClose(true);
-      clearAsset();
+      clearChild();
     }
   };
 
   const clearAndClose = () => {
     handleClose(true);
-    clearAsset();
+    clearChild();
   };
 
   return (
@@ -83,10 +73,10 @@ const AddAsset = ({ handleClose, open, addAsset, setAlert }) => {
       onClose={clearAndClose}
       aria-labelledby='form-dialog-title'
     >
-      <DialogTitle id='form-dialog-title'>Add New Asset</DialogTitle>
+      <DialogTitle id='form-dialog-title'>Add New Child</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Add all your Assets to be considered in your balance sheet and
+          Add all your Children to be considered in your balance sheet and
           financial report.
         </DialogContentText>
 
@@ -104,54 +94,39 @@ const AddAsset = ({ handleClose, open, addAsset, setAlert }) => {
 
         <TextField
           margin='dense'
-          id='amount'
-          name='amount'
-          label='Amount'
+          id='age'
+          name='age'
+          label='Age'
           type='number'
-          value={amount}
+          value={age}
+          InputProps={{
+            inputProps: {
+              max: 40,
+              min: 0,
+            },
+          }}
           onChange={onChange}
           fullWidth
         />
-        <FormControl className={classes.formControl}>
-          <InputLabel id='type-label'>Type</InputLabel>
-          <Select
-            labelId='type'
-            name='type'
-            id='type'
-            value={type}
-            onChange={onChange}
-          >
-            <MenuItem id='type' value={10}>
-              Cash
-            </MenuItem>
-            <MenuItem id='type' value={20}>
-              Logn Term Deposit
-            </MenuItem>
-            <MenuItem id='type' value={30}>
-              Equities
-            </MenuItem>
-            <MenuItem id='type' value={40}>
-              Real Estate
-            </MenuItem>
-          </Select>
-        </FormControl>
-        <Typography
-          className={classes.title}
-          color='textSecondary'
-          gutterBottom
-        >
-          Return: {returnValue}%
-        </Typography>
-
-        <Slider
-          id='returnValue'
-          name='returnValue'
-          value={returnValue}
-          onChange={handleReturn}
-          min={0}
-          max={30}
-          valueLabelDisplay='auto'
-          color='secondary'
+        <TextField
+          margin='dense'
+          id='school'
+          name='school'
+          label='School Cost/Year'
+          type='number'
+          value={school}
+          onChange={onChange}
+          fullWidth
+        />
+        <TextField
+          margin='dense'
+          id='uni'
+          name='uni'
+          label='University Cost/Year'
+          type='number'
+          value={uni}
+          onChange={onChange}
+          fullWidth
         />
       </DialogContent>
       <DialogActions>
@@ -159,7 +134,7 @@ const AddAsset = ({ handleClose, open, addAsset, setAlert }) => {
           Cancel
         </Button>
         <Button onClick={onSubmit} color='primary'>
-          Add Asset
+          Add Child
         </Button>
       </DialogActions>
       <Backdrop className={classes.backdrop} open={false}>
@@ -169,15 +144,15 @@ const AddAsset = ({ handleClose, open, addAsset, setAlert }) => {
   );
 };
 
-AddAsset.propTypes = {
+AddChild.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  addAsset: PropTypes.func.isRequired,
+  addChild: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({});
 export default connect(mapStateToProps, {
-  addAsset,
+  addChild,
   setAlert,
-})(AddAsset);
+})(AddChild);

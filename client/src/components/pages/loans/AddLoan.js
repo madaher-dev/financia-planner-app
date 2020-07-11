@@ -68,13 +68,28 @@ const AddLoan = ({ handleClose, open, addLoan, setAlert }) => {
     else {
       addLoan(loan);
       handleClose(true);
+      clearLoan();
     }
+  };
+
+  const clearLoan = () => {
+    setLoan({
+      name: '',
+      amount: '',
+      interest: '',
+      maturity: '',
+    });
+  };
+
+  const clearAndClose = () => {
+    handleClose(true);
+    clearLoan();
   };
 
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
+      onClose={clearAndClose}
       aria-labelledby='form-dialog-title'
     >
       <DialogTitle id='form-dialog-title'>Add New Loan</DialogTitle>
@@ -147,7 +162,7 @@ const AddLoan = ({ handleClose, open, addLoan, setAlert }) => {
         </MuiPickersUtilsProvider>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color='primary'>
+        <Button onClick={clearAndClose} color='primary'>
           Cancel
         </Button>
         <Button onClick={onSubmit} color='primary'>
