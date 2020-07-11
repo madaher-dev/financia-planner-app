@@ -25,7 +25,7 @@ router.get('/', auth, async (req, res) => {
 // @access  Private
 router.post(
   '/',
-  [auth, [check('name', 'Name is required').not().isEmpty()]],
+  [auth, [check('name', 'Please fill in a name').not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -90,6 +90,7 @@ router.put('/:id', auth, async (req, res) => {
 router.delete('/:id', auth, async (req, res) => {
   try {
     let asset = await Asset.findById(req.params.id);
+
     if (!asset) return res.status(404).json({ msg: 'Asset not found' });
 
     // Make sure user owns contact

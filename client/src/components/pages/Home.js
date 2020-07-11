@@ -10,7 +10,7 @@ import Income from './Income';
 import Goals from './Goals';
 import Family from './Family';
 import Loans from './Loans';
-import Assets from './Assets';
+import Assets from './assets/Assets';
 import Profile from './Profile';
 
 const Home = ({ openBar, setTitle, loadUser, match }) => {

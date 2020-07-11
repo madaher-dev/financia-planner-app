@@ -11,13 +11,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
-import { addAsset } from '../../../actions/assetActions';
+import { editAsset } from '../../../actions/assetActions';
 import { setAlert } from '../../../actions/alertActions';
 
 const useStyles = makeStyles((theme) => ({
@@ -32,24 +30,42 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddAsset = ({ handleClose, open, addAsset, setAlert }) => {
+const EditAsset = ({ handleClose, open, editAsset, setAlert, current }) => {
   const classes = useStyles();
-
-  const [asset, setAsset] = useState({
+  const [assetToEdit, setAsset] = useState({
     name: '',
     amount: '',
-    type: 10,
+    type: '',
     returnValue: 0,
+    id: '',
   });
-  const { name, amount, type } = asset;
+  //Setting form data on form open
+  React.useEffect(
+    () => {
+      if (current) {
+        setAsset({
+          name: current.name,
+          amount: current.amount,
+          type: current.type,
+          id: current._id,
+        });
+        setReturn(current.returnValue);
+      }
+    },
+
+    // eslint-disable-next-line
+    [current]
+  );
+
+  const { name, amount, type } = assetToEdit;
   const onChange = (e) => {
-    setAsset({ ...asset, [e.target.name]: e.target.value });
+    setAsset({ ...assetToEdit, [e.target.name]: e.target.value });
   };
 
   const [returnValue, setReturn] = useState(0);
   const handleReturn = (event, newValue) => {
     setReturn(newValue);
-    setAsset({ ...asset, returnValue: newValue });
+    setAsset({ ...assetToEdit, returnValue: newValue });
   };
 
   const onSubmit = async (e) => {
@@ -58,7 +74,7 @@ const AddAsset = ({ handleClose, open, addAsset, setAlert }) => {
     // setLoading();
     if (name === '') setAlert('Please fill in a name', 'error');
     else {
-      addAsset(asset);
+      editAsset(assetToEdit);
       handleClose(true);
     }
   };
@@ -145,25 +161,25 @@ const AddAsset = ({ handleClose, open, addAsset, setAlert }) => {
           Cancel
         </Button>
         <Button onClick={onSubmit} color='primary'>
-          Add Asset
+          Update Asset
         </Button>
       </DialogActions>
-      <Backdrop className={classes.backdrop} open={false}>
-        <CircularProgress color='inherit' />
-      </Backdrop>
     </Dialog>
   );
 };
 
-AddAsset.propTypes = {
+EditAsset.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  addAsset: PropTypes.func.isRequired,
+  editAsset: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
+  current: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  current: state.assets.current,
+});
 export default connect(mapStateToProps, {
-  addAsset,
+  editAsset,
   setAlert,
-})(AddAsset);
+})(EditAsset);

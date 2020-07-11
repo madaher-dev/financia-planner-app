@@ -8,9 +8,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import AddAsset from './AddAsset';
+import EditAsset from './EditAsset';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import AssetCard from './AssetCard';
+
+import Spinner from '../../layout/Spinner';
+import { getAssets } from '../../../actions/assetActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,11 +23,11 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2),
     },
   },
-  navShift: {
-    marginTop: 30,
-  },
+
   firstRow: {
     paddingRight: 20,
+    paddingLeft: 20,
+    paddingTop: 20,
   },
   icon: {
     paddingRight: 15,
@@ -43,27 +48,36 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Assets = ({ openBar, setTitle }) => {
+const Assets = ({ openBar, setTitle, assets, getAssets, loading, current }) => {
+  const classes = useStyles();
   useEffect(() => {
     setTitle('Assets');
     openBar();
+    getAssets();
 
     // eslint-disable-next-line
   }, []);
   const [open, setOpen] = React.useState(false);
+  const [openEdit, setEditOpen] = React.useState(false);
 
   const handleClose = () => {
     setOpen(false);
+    //getAssets();
+  };
+  const handleEditClose = () => {
+    setEditOpen(false);
+    //getAssets();
+  };
+  const handleEditOpen = () => {
+    setEditOpen(true);
     //getAssets();
   };
   const addAsset = () => {
     setOpen(true);
   };
 
-  console.log(open);
-  const classes = useStyles();
   return (
-    <Grid container direction='column' className={classes.navShift}>
+    <Grid container direction='column'>
       <Grid
         item
         container
@@ -87,34 +101,35 @@ const Assets = ({ openBar, setTitle }) => {
         </IconButton>
         <Typography color='primary'>Add Asset</Typography>
       </Grid>
-      <Grid item>
+      <Grid item className={classes.firstRow}>
         <Card className={classes.root} variant='outlined'>
           <CardContent>
-            <Typography
-              className={classes.title}
-              color='textSecondary'
-              gutterBottom
-            >
-              Word of the Day
-            </Typography>
-            <Typography variant='h5' component='h2'>
-              be{bull}nev{bull}o{bull}lent
-            </Typography>
-            <Typography className={classes.pos} color='textSecondary'>
-              adjective
-            </Typography>
-            <Typography variant='body2' component='p'>
-              well meaning and kindly.
-              <br />
-              {'"a benevolent smile"'}
-            </Typography>
+            {assets !== null && !loading ? (
+              <Grid container spacing={2} direction='column'>
+                {assets.map((asset) => (
+                  //Looping through assets array and list ContactItem Component
+
+                  <Grid item key={asset._id}>
+                    <AssetCard
+                      asset={asset}
+                      setEditOpen={() => handleEditOpen()}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            ) : (
+              <Spinner />
+            )}
           </CardContent>
           <CardActions>
-            <Button size='small'>Learn More</Button>
+            <Button size='small' to='/user' component={Link}>
+              Back
+            </Button>
           </CardActions>
         </Card>
       </Grid>
       <AddAsset open={open} handleClose={() => handleClose()} />
+      <EditAsset open={openEdit} handleClose={() => handleEditClose()} />
     </Grid>
   );
 };
@@ -122,11 +137,17 @@ const Assets = ({ openBar, setTitle }) => {
 Assets.propTypes = {
   openBar: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
+  assets: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired,
+  current: PropTypes.object,
 };
 const mapStateToProps = (state) => ({
   isAuthenticated: state.users.isAuthenticated,
+  assets: state.assets.assets,
+  loading: state.assets.loading,
 });
 export default connect(mapStateToProps, {
   openBar,
   setTitle,
+  getAssets,
 })(Assets);
