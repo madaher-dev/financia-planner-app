@@ -65,7 +65,7 @@ const Menu = ({ openBar, setTitle, loadUser, user }) => {
         </Typography>
       </Grid>
       <Grid item className={classes.button}>
-        <Card className={classes.card} variant='outlined' raised='true'>
+        <Card className={classes.card} variant='outlined' raised={true}>
           <CardContent>
             <Grid container spacing={2}>
               <Grid

@@ -23,3 +23,12 @@ export const RESET_FAIL = 'RESET_FAIL';
 export const TITLE = 'TITLE';
 export const BAR_OPEN = 'BAR_OPEN';
 export const BAR_CLOSE = 'BAR_CLOSE';
+
+export const ADD_ASSET = 'ADD_ASSET';
+export const DELETE_ASSET = 'DELETE_ASSET';
+export const SET_CURRENT = 'SET_CURRENT';
+export const CLEAR_CURRENT = 'CLEAR_CURRENT';
+export const UPDATE_ASSET = 'UPDATE_ASSET';
+export const ASSET_ERROR = 'ASSET_ERROR';
+export const GET_ASSETS = 'GET_ASSETS';
+export const CLEAR_ASSETS = 'CLEAR_ASSETS';

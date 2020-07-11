@@ -32,7 +32,7 @@ export const registerUser = (user) => async (dispatch) => {
 
   try {
     const result = await axios.post('/api/users', user, config);
-    console.log(result);
+
     dispatch({
       type: REGISTER_SUCCESS,
       payload: result.data, //Token

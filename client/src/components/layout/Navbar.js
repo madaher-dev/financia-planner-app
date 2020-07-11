@@ -199,7 +199,7 @@ Navbar.propTypes = {
   open: PropTypes.bool.isRequired,
   title: PropTypes.string,
   logout: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
+  isAuthenticated: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
