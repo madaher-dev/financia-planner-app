@@ -154,7 +154,7 @@ router.put(
   }
 );
 
-// @route   Post api/auth/updatePasswordViaEmail
+// @route   Post api/auth/reset
 // @desc    Update Password via email
 // @access  Public (requires email token)
 
@@ -217,6 +217,28 @@ router.put(
     }
   }
 );
+
+// @route   Post api/auth/updatePass
+// @desc    Update Password via form
+// @access  Private
+
+router.put('/updatePass', auth, async (req, res) => {
+  try {
+    const payload = {
+      password: null,
+    };
+
+    const salt = await bcrypt.genSalt(10);
+
+    payload.password = await bcrypt.hash(req.body.password, salt);
+
+    await User.findByIdAndUpdate(req.user.id, { $set: payload }, { new: true });
+    return res.json('ok');
+  } catch (err) {
+    console.error('no user exists in db to update');
+    return res.status(401).json('no user exists in db to update');
+  }
+});
 // @route   Post api/auth/reset
 // @desc    Check if email token valid and return username
 // @access  Public (needs token)

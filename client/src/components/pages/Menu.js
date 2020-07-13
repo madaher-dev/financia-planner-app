@@ -16,6 +16,8 @@ import SchoolIcon from '@material-ui/icons/School';
 import GolfCourseIcon from '@material-ui/icons/GolfCourse';
 import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
 import { Link } from 'react-router-dom';
+import { loadPartner } from '../../actions/userActions';
+import { loadGoal } from '../../actions/goalActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,10 +49,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Menu = ({ openBar, setTitle, loadUser, user }) => {
+const Menu = ({ openBar, setTitle, user, loadPartner, loadGoal }) => {
   useEffect(() => {
     setTitle('Home');
     openBar();
+    if (user.partner) {
+      loadPartner();
+    }
+    loadGoal();
 
     // eslint-disable-next-line
   }, []);
@@ -188,6 +194,8 @@ const Menu = ({ openBar, setTitle, loadUser, user }) => {
 Menu.propTypes = {
   openBar: PropTypes.func.isRequired,
   setTitle: PropTypes.func.isRequired,
+  loadPartner: PropTypes.func.isRequired,
+  loadGoal: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
   isAuthenticated: state.users.isAuthenticated,
@@ -196,4 +204,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   openBar,
   setTitle,
+  loadPartner,
+  loadGoal,
 })(Menu);

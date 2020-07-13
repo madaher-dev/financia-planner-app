@@ -18,6 +18,10 @@ import {
   RESET_TOKEN_FAIL,
   RESET_OK,
   RESET_FAIL,
+  PARTNER_LOADED,
+  EDIT_PARTNER,
+  UPDATE_SUCCESS,
+  UPDATE_FAIL,
 } from '../actions/Types';
 
 const initialState = {
@@ -31,6 +35,9 @@ const initialState = {
   forgot: false,
   reset: false,
   email: null,
+  partnerInfo: null,
+  update: null,
+  edit: null,
 };
 
 export default (state = initialState, action) => {
@@ -82,12 +89,29 @@ export default (state = initialState, action) => {
         error: null,
         formLoading: false,
         user: action.payload,
+        edit: true,
       };
     case EDIT_FAIL:
       return {
         ...state,
         error: action.payload,
         formLoading: false,
+        edit: false,
+      };
+
+    case UPDATE_SUCCESS:
+      return {
+        ...state,
+        error: null,
+        formLoading: false,
+        update: true,
+      };
+    case UPDATE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+        formLoading: false,
+        update: false,
       };
     case PARTNER_ADDED:
       return {
@@ -108,6 +132,8 @@ export default (state = initialState, action) => {
         formLoading: false,
         forgot: false,
         partner: false,
+        update: false,
+        edit: false,
       };
     case SET_LOADING:
       return {
@@ -151,6 +177,18 @@ export default (state = initialState, action) => {
         token: null,
         formLoading: false,
         error: action.payload,
+      };
+    case PARTNER_LOADED:
+      return {
+        ...state,
+        partnerInfo: action.payload,
+      };
+    case EDIT_PARTNER:
+      return {
+        ...state,
+        error: null,
+        formLoading: false,
+        partnerInfo: action.payload,
       };
     default:
       return state;

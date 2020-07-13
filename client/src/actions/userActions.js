@@ -18,6 +18,10 @@ import {
   RESET_TOKEN_FAIL,
   RESET_OK,
   RESET_FAIL,
+  PARTNER_LOADED,
+  EDIT_PARTNER,
+  UPDATE_SUCCESS,
+  UPDATE_FAIL,
 } from './Types';
 import axios from 'axios';
 
@@ -90,9 +94,24 @@ export const loadUser = () => async (dispatch) => {
   }
 };
 
-// Edit User (Use online in register stepper)
+// Load Partner
 
-export const editUser = (user) => async (dispatch) => {
+export const loadPartner = () => async (dispatch) => {
+  try {
+    const partner = await axios.get('/api/users/partner');
+
+    dispatch({
+      type: PARTNER_LOADED,
+      payload: partner.data,
+    });
+  } catch (err) {
+    console.log('Partner failed to load');
+  }
+};
+
+// Edit User (when editing make sure not to ruin registration steps)
+
+export const editUser = (user, dateob) => async (dispatch) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -100,6 +119,8 @@ export const editUser = (user) => async (dispatch) => {
   };
 
   try {
+    user.dob = dateob;
+
     const loaded = await axios.put('/api/users', user, config);
 
     dispatch({
@@ -114,9 +135,9 @@ export const editUser = (user) => async (dispatch) => {
   }
 };
 
-// Add a Partner
+// Edit User (from Form inside app)
 
-export const addPartner = (partner) => async (dispatch) => {
+export const editUserForm = (user, dateob) => async (dispatch) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -124,6 +145,83 @@ export const addPartner = (partner) => async (dispatch) => {
   };
 
   try {
+    user.dob = dateob;
+
+    const loaded = await axios.put('/api/users', user, config);
+
+    dispatch({
+      type: UPDATE_SUCCESS,
+    });
+    dispatch(loadUser());
+  } catch (err) {
+    dispatch({
+      type: UPDATE_FAIL,
+      payload: err.response.data,
+    });
+  }
+};
+
+// Update password (from Form inside app)
+
+export const changePass = (pass) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  const newPass = { password: pass };
+
+  try {
+    const loaded = await axios.put('/api/auth/updatePass', newPass, config);
+
+    dispatch({
+      type: UPDATE_SUCCESS,
+    });
+  } catch (err) {
+    dispatch({
+      type: UPDATE_FAIL,
+      payload: err.response.data,
+    });
+  }
+};
+
+// Edit Partner
+
+export const editPartner = (partner) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const loaded = await axios.put('/api/users/partner', partner, config);
+
+    dispatch({
+      type: EDIT_PARTNER,
+      payload: loaded.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: EDIT_FAIL,
+      payload: err.response.data,
+    });
+  }
+};
+
+// Add a Partner
+
+export const addPartner = (partner, dateob) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    partner.pdob = dateob;
+    console.log(partner);
+    console.log(dateob);
     await axios.post('/api/partners', partner, config);
 
     dispatch({

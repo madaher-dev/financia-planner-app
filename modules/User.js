@@ -48,6 +48,14 @@ const UserSchema = mongoose.Schema(
     partner: {
       type: Boolean,
     },
+    income: {
+      type: Number,
+      default: 0,
+    },
+    increase: {
+      type: Number,
+      default: 0,
+    },
     completedReg: {
       type: Boolean,
       default: false,

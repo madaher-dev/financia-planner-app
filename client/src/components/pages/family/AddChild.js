@@ -55,6 +55,7 @@ const AddChild = ({ handleClose, open, addChild, setAlert }) => {
     e.preventDefault();
 
     if (name === '') setAlert('Please fill in a name', 'error');
+    else if (age === '') setAlert('Please fill in child age', 'error');
     else {
       addChild(child);
       handleClose(true);

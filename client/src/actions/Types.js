@@ -19,6 +19,10 @@ export const RESET_TOKEN_OK = 'RESET_TOKEN_OK';
 export const RESET_TOKEN_FAIL = 'RESET_TOKEN_FAIL';
 export const RESET_OK = 'RESET_OK';
 export const RESET_FAIL = 'RESET_FAIL';
+export const PARTNER_LOADED = 'PARTNER_LOADED';
+export const EDIT_PARTNER = 'EDIT_PARTNER';
+export const UPDATE_SUCCESS = 'UPDATE_SUCCESS';
+export const UPDATE_FAIL = 'UPDATE_FAIL';
 
 export const TITLE = 'TITLE';
 export const BAR_OPEN = 'BAR_OPEN';
@@ -46,3 +50,6 @@ export const UPDATE_CHILD = 'UPDATE_CHILD';
 export const CHILD_ERROR = 'CHILD_ERROR';
 export const GET_FAMILY = 'GET_FAMILY';
 export const CLEAR_FAMILY = 'CLEAR_FAMILY';
+
+export const GOAL_LOADED = 'GOAL_LOADED';
+export const EDIT_GOAL = 'EDIT_GOAL';

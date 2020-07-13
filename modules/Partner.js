@@ -29,6 +29,14 @@ const PartnerSchema = mongoose.Schema(
     phone: {
       type: String,
     },
+    income: {
+      type: Number,
+      default: 0,
+    },
+    increase: {
+      type: Number,
+      default: 0,
+    },
     partner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'users',

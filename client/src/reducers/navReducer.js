@@ -2,7 +2,7 @@ import { TITLE, BAR_OPEN, BAR_CLOSE } from '../actions/Types';
 
 const initialState = {
   barOpen: true,
-  title: 'Test Title',
+  title: 'Financial Planner',
 };
 
 export default (state = initialState, action) => {

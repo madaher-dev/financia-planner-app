@@ -42,6 +42,15 @@ const useStyles = makeStyles({
   avatar: {
     backgroundColor: '#f50057',
   },
+  cardHead: {
+    backgroundColor: '#7e57c2',
+  },
+  delete: {
+    color: '#e0e0e0',
+  },
+  cardTitle: {
+    color: '#e0e0e0',
+  },
 });
 
 const AssetCard = ({ asset, deleteAsset, setCurrent, setEditOpen }) => {
@@ -81,6 +90,9 @@ const AssetCard = ({ asset, deleteAsset, setCurrent, setEditOpen }) => {
   return (
     <Card className={classes.root}>
       <CardHeader
+        classes={{
+          title: classes.cardTitle,
+        }}
         avatar={
           <IconButton aria-label='settings' onClick={setToEdit}>
             <Avatar aria-label='icon' className={classes.avatar}>
@@ -89,7 +101,7 @@ const AssetCard = ({ asset, deleteAsset, setCurrent, setEditOpen }) => {
           </IconButton>
         }
         action={
-          <Tooltip title='Delete'>
+          <Tooltip title='Delete' className={classes.delete}>
             <IconButton aria-label='settings' onClick={deleteAction}>
               <DeleteIcon />
             </IconButton>
@@ -97,6 +109,7 @@ const AssetCard = ({ asset, deleteAsset, setCurrent, setEditOpen }) => {
         }
         title={asset.name}
         subheader={type}
+        className={classes.cardHead}
       />
 
       <CardContent onClick={setToEdit}>

@@ -141,19 +141,19 @@ const Register = ({
   const ponSubmit = (e) => {
     e.preventDefault();
 
-    addPartner(partner);
+    addPartner(partner, pdateob);
   };
 
   useEffect(() => {
     if (partnerAdded) {
-      editUser(user);
+      editUser(user, dateob);
     }
     // eslint-disable-next-line
   }, [partnerAdded]);
 
   const submitEdit = (e) => {
     e.preventDefault();
-    editUser(user);
+    editUser(user, dateob);
   };
 
   const handlePartner = (e) => {
@@ -299,7 +299,6 @@ const Register = ({
               <DatePicker
                 disableFuture
                 openTo='year'
-                variant='inline'
                 inputVariant='outlined'
                 format='dd/MM/yyyy'
                 label='Date of birth'
@@ -432,7 +431,6 @@ const Register = ({
               <DatePicker
                 disableFuture
                 openTo='year'
-                variant='inline'
                 inputVariant='outlined'
                 format='dd/MM/yyyy'
                 label='Date of birth'

@@ -6,6 +6,7 @@ const { check, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const User = require('../modules/User');
+const Partner = require('../modules/Partner');
 const auth = require('../middleware/auth');
 
 // @route   POST api/users
@@ -90,16 +91,29 @@ router.post(
     }
   }
 );
-// @route   POST api/users
+
+// @route   GET api/users/partner
+// @desc    Get partner
+// @access  Private
+
+router.get('/partner', auth, async (req, res) => {
+  try {
+    const partner = await Partner.findOne({ partner: req.user.id });
+    res.json(partner);
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
+});
+// @route   PUT api/users
 // @desc    Edit a User
 // @access  Private
 router.put('/', auth, async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({
-      errors: errors.array(),
-    });
-  }
+  // const errors = validationResult(req);
+  // if (!errors.isEmpty()) {
+  //   return res.status(400).json({
+  //     errors: errors.array(),
+  //   });
+  // }
 
   const {
     firstName,
@@ -111,6 +125,8 @@ router.put('/', auth, async (req, res) => {
     dob,
     phone,
     partner,
+    income,
+    increase,
   } = req.body;
 
   const userFields = {};
@@ -121,8 +137,11 @@ router.put('/', auth, async (req, res) => {
   if (title) userFields.title = title;
   if (occupation) userFields.occupation = occupation;
   if (dob) userFields.dob = dob;
+  if (income) userFields.income = income;
+  if (increase) userFields.increase = increase;
 
-  userFields.partner = partner;
+  if (partner !== undefined) userFields.partner = partner;
+
   userFields.completedReg = true;
 
   try {
@@ -132,6 +151,55 @@ router.put('/', auth, async (req, res) => {
       { new: true }
     ).select('-password');
     res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send({ errors: 'Server Error' });
+  }
+});
+
+// @route   PUT api/users/partner
+// @desc    Edit a Partner
+// @access  Private
+
+router.put('/partner', auth, async (req, res) => {
+  // const errors = validationResult(req);
+  // if (!errors.isEmpty()) {
+  //   return res.status(400).json({
+  //     errors: errors.array(),
+  //   });
+  // }
+
+  const {
+    firstName,
+    lastName,
+    email,
+    title,
+    occupation,
+    dob,
+    phone,
+    income,
+    increase,
+  } = req.body;
+
+  const userFields = {};
+  if (firstName) userFields.firstName = firstName;
+  if (lastName) userFields.lastName = lastName;
+  if (email) userFields.email = email;
+  if (phone) userFields.phone = phone;
+  if (title) userFields.title = title;
+  if (occupation) userFields.occupation = occupation;
+  if (dob) userFields.dob = dob;
+  if (income) userFields.income = income;
+  if (increase) userFields.increase = increase;
+
+  try {
+    partner = await Partner.findOneAndUpdate(
+      { partner: req.user.id },
+      { $set: userFields },
+      { new: true }
+    );
+
+    res.json(partner);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
