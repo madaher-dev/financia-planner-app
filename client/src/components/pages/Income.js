@@ -55,10 +55,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#e0e0e0',
     fontSize: 18,
   },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
-  },
+
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
@@ -87,6 +84,7 @@ const Income = ({
   useEffect(() => {
     setTitle('Income');
     openBar();
+
     if (user.partner && !partner) {
       loadPartner();
     }
@@ -161,6 +159,7 @@ const Income = ({
 
       clearErrors();
     }
+    // eslint-disable-next-line
   }, [edit]);
 
   useEffect(() => {
@@ -387,7 +386,7 @@ Income.propTypes = {
   editGoal: PropTypes.func.isRequired,
   loadGoal: PropTypes.func.isRequired,
   clearErrors: PropTypes.func.isRequired,
-  formloading: PropTypes.bool.isRequired,
+  formloading: PropTypes.bool,
   setLoading: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
 

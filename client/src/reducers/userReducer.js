@@ -22,6 +22,8 @@ import {
   EDIT_PARTNER,
   UPDATE_SUCCESS,
   UPDATE_FAIL,
+  PASS_UPDATE_SUCCESS,
+  PASS_UPDATE_FAIL,
 } from '../actions/Types';
 
 const initialState = {
@@ -102,11 +104,27 @@ export default (state = initialState, action) => {
     case UPDATE_SUCCESS:
       return {
         ...state,
+        user: action.payload,
         error: null,
         formLoading: false,
         update: true,
       };
     case UPDATE_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+        formLoading: false,
+        update: false,
+      };
+    case PASS_UPDATE_SUCCESS:
+      return {
+        ...state,
+
+        error: null,
+        formLoading: false,
+        update: true,
+      };
+    case PASS_UPDATE_FAIL:
       return {
         ...state,
         error: action.payload,

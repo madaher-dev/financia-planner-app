@@ -18,6 +18,7 @@ import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
 import { Link } from 'react-router-dom';
 import { loadPartner } from '../../actions/userActions';
 import { loadGoal } from '../../actions/goalActions';
+import Badge from '@material-ui/core/Badge';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,9 +48,18 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 20,
     marginRight: 20,
   },
+  customBadge: {
+    color: 'white',
+  },
 }));
 
 const Menu = ({ openBar, setTitle, user, loadPartner, loadGoal }) => {
+  let incomeBadge;
+
+  if (user.income > 0) {
+    incomeBadge = true;
+  } else incomeBadge = false;
+
   useEffect(() => {
     setTitle('Home');
     openBar();
@@ -90,8 +100,17 @@ const Menu = ({ openBar, setTitle, user, loadPartner, loadGoal }) => {
                     to='/user/income'
                     component={Link}
                   >
-                    <MonetizationOnIcon style={{ fontSize: 80 }} />
+                    <Badge
+                      color='secondary'
+                      overlap='circle'
+                      badgeContent={'!'}
+                      classes={{ badge: classes.customBadge }}
+                      invisible={incomeBadge}
+                    >
+                      <MonetizationOnIcon style={{ fontSize: 80 }} />
+                    </Badge>
                   </IconButton>
+
                   <Typography align='center' color='primary'>
                     Income
                   </Typography>

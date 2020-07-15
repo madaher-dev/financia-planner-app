@@ -23,6 +23,8 @@ export const PARTNER_LOADED = 'PARTNER_LOADED';
 export const EDIT_PARTNER = 'EDIT_PARTNER';
 export const UPDATE_SUCCESS = 'UPDATE_SUCCESS';
 export const UPDATE_FAIL = 'UPDATE_FAIL';
+export const PASS_UPDATE_SUCCESS = 'PASS_UPDATE_SUCCESS';
+export const PASS_UPDATE_FAIL = 'PASS_UPDATE_FAIL';
 
 export const TITLE = 'TITLE';
 export const BAR_OPEN = 'BAR_OPEN';

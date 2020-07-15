@@ -149,7 +149,6 @@ Assets.propTypes = {
   clearCurrent: PropTypes.func.isRequired,
 };
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.users.isAuthenticated,
   assets: state.assets.assets,
   loading: state.assets.loading,
 });

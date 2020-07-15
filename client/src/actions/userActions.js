@@ -22,6 +22,8 @@ import {
   EDIT_PARTNER,
   UPDATE_SUCCESS,
   UPDATE_FAIL,
+  PASS_UPDATE_SUCCESS,
+  PASS_UPDATE_FAIL,
 } from './Types';
 import axios from 'axios';
 
@@ -151,6 +153,7 @@ export const editUserForm = (user, dateob) => async (dispatch) => {
 
     dispatch({
       type: UPDATE_SUCCESS,
+      payload: loaded.data,
     });
     dispatch(loadUser());
   } catch (err) {
@@ -172,14 +175,14 @@ export const changePass = (pass) => async (dispatch) => {
   const newPass = { password: pass };
 
   try {
-    const loaded = await axios.put('/api/auth/updatePass', newPass, config);
+    await axios.put('/api/auth/updatePass', newPass, config);
 
     dispatch({
-      type: UPDATE_SUCCESS,
+      type: PASS_UPDATE_SUCCESS,
     });
   } catch (err) {
     dispatch({
-      type: UPDATE_FAIL,
+      type: PASS_UPDATE_FAIL,
       payload: err.response.data,
     });
   }

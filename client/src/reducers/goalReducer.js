@@ -9,8 +9,8 @@ import {
 const initialState = {
   goal: null,
   error: null,
-  edit: null,
-  formLoading: null,
+  edit: false,
+  formLoading: false,
 };
 
 export default (state = initialState, action) => {

@@ -191,6 +191,7 @@ const Profile = ({
       setCard(0);
       clearErrors();
     }
+    // eslint-disable-next-line
   }, [update]);
 
   // partner part
@@ -254,7 +255,6 @@ const Profile = ({
             </CardActions>
           </Card>
         );
-        break;
       case 1:
         return (
           <Card>
@@ -357,7 +357,6 @@ const Profile = ({
             </CardActions>
           </Card>
         );
-        break;
       case 2:
         return (
           <Card>
@@ -405,7 +404,6 @@ const Profile = ({
             </CardActions>
           </Card>
         );
-        break;
       case 3:
         return (
           <Card>

@@ -115,6 +115,8 @@ const Goals = ({
 
       clearErrors();
     }
+
+    // eslint-disable-next-line
   }, [edit]);
 
   useEffect(() => {
