@@ -3,5 +3,5 @@
   "jwtSecret": "nOLqYqrxPYKPLLkiniUvUh4ARWuP4pVl",
   "EMAIL_ADDRESS": "daher@butula.net",
   "EMAIL_PASSWORD": "P@ss1234#",
-  "URL": "http://localhost:3000/"
+  "URL": "https://financial-planner-pringles-app.herokuapp.com/"
 }
